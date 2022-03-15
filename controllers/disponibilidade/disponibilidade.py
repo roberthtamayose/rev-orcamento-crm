@@ -24,7 +24,18 @@ def get_db():
 
 
 @router_disponibilidade.get("/produtos", response_model= List[schemas.Produto])
-def read_produtos(filial: Optional[int] = None, skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "nmProduto",  db: Session = Depends(get_db)):
+def read_produtos(filial: Optional[int] = 1, skip: Optional[int] = 0, limit: Optional[int] = 10, filter: Optional[str]= "nmProduto",  db: Session = Depends(get_db)):
     db_Disp = disponibilidade_func.get_disponibilidade_produto(db, skip, limit, filter, filial)
     return db_Disp
 
+
+@router_disponibilidade.get("/cores", response_model= List[schemas.Cores])
+def read_cores(filial: Optional[int] = 1, skip: Optional[int] = 0, limit: Optional[int] = 10, prod: Optional[str] = None, filter: Optional[str]= "nmProduto",  db: Session = Depends(get_db)):
+    db_Disp = disponibilidade_func.get_disponibilidade_cor(db, skip, limit, prod, filter, filial)
+    return db_Disp
+
+
+@router_disponibilidade.get("/colecoes", response_model= List[schemas.Colecoes])
+def read_cores(db: Session = Depends(get_db)):
+    db_Disp = disponibilidade_func.get_disponibilidade_colecao(db)
+    return db_Disp

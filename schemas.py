@@ -71,32 +71,34 @@ class Vendedor(BaseModel):
 
 
 class Produto(BaseModel):
-   filial: Optional[int]
+   # filial: Optional[int]
    codProduto: str
    nmProduto: str
-   colecao: str
-   qtdEstoque: float
+   colecao: Optional[str]
+   qtdEstoque: Optional[float]
 
    class Config:
       orm_mode = True
 
 
-# class Cores(BaseModel):
-#    idFilia:	int
-#    codProduto: str
-#    idProduto:	int
-#    colecao:	str
-#    qtdEstoque:	str
+class Cores(BaseModel):
+   # idFilia:	int
+   codProduto: str
+   nmProduto: str
+   idProduto:	int
+   colecao: Optional[str]
+   qtdEstoque: Optional[str]
 
-#    class Config:
-#       orm_mode = True
+   class Config:
+      orm_mode = True
 
 
-# class Colecoes(BaseModel):
-#    colecoes: str
+class Colecoes(BaseModel):
+   colecoes: str
 
-#    class Config:
-#       orm_mode = True
+   class Config:
+      orm_mode = True
+
 
 class Pedido(BaseModel):
    idPedido: Optional[int] = None
