@@ -11,6 +11,7 @@ from controllers.usuario.usuario import router_usuario
 from controllers.vendedor.vendedor import router_vendedor
 from controllers.disponibilidade.disponibilidade import router_disponibilidade
 from controllers.pedido.pedido import router_pedido
+from controllers.itempedido.itempedido import router_itempedido
 from controllers.auth.auth import router_auth
 
 
@@ -28,6 +29,7 @@ app.include_router(router_usuario,prefix="/usuarios", dependencies=[Depends(JWTB
 app.include_router(router_vendedor,prefix="/vendedores", dependencies=[Depends(JWTBearer())], tags=["vendedores"])
 app.include_router(router_disponibilidade,prefix="/disponibilidades", dependencies=[Depends(JWTBearer())], tags=["disponibilidades"])
 app.include_router(router_pedido,prefix="/pedidos", dependencies=[Depends(JWTBearer())], tags=["pedidos"])
+app.include_router(router_itempedido,prefix="/itempedidos", dependencies=[Depends(JWTBearer())], tags=["itempedidos"])
 app.include_router(router_auth,prefix="/auth", tags=["auth"])
 
 

@@ -22,6 +22,10 @@ def get_pedido_idPedido(db: Session, idPedido: int):
     return db.query(models.Pedido).filter(models.Pedido.idPedido == idPedido).first()
 
 
+def get_pedido_idPedido_ativo(db: Session, idPedido: int):
+    return db.query(models.Pedido).filter(models.Pedido.idPedido == idPedido, models.Pedido.ativo == 1).first()
+
+
 def get_pedido_codPedido(db: Session, codPedido: str):
     return db.query(models.Pedido).filter(models.Pedido.codPedido == codPedido).first()
 

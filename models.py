@@ -110,3 +110,17 @@ class Pedido(Base):
    dtVencimento = Column(String)
    ativo = Column(Integer)
    status = Column(String)
+
+
+class ItemPedido(Base):
+   __tablename__ = "tb_itens_pedido"
+
+   idItem = Column(Integer, primary_key=True, index=True)
+   codProduto = Column(String)
+   nmProduto = Column(String)
+   idErpColecao = Column(String)
+   vlUnitario = Column(Float)
+   vlDesconto = Column(Float)
+   vlTotal = Column(Float)
+   qtdItem = Column(Float)
+   idPedido = Column(Integer)

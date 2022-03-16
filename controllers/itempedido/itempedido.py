@@ -1,0 +1,61 @@
+from typing import List, Optional
+
+from fastapi import Depends, FastAPI, HTTPException, APIRouter
+from sqlalchemy.orm import Session
+
+import functions.itempedido_func  as itempedido_func 
+import functions.pedido_func as pedido_func 
+
+import models, schemas
+from database import SessionLocal, engine
+
+models.Base.metadata.create_all(bind=engine)
+
+router_itempedido = APIRouter()
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@router_itempedido.post("/", response_model=List[schemas.ItemPedido])
+def create_trasportadora(itempedido: List[schemas.ItemPedido], db: Session = Depends(get_db)):
+    db_itempedido = pedido_func.get_pedido_idPedido_ativo(db, itempedido[0].idPedido)
+    if not db_itempedido:
+        # pedido_func.post_pedido(db, schemas.Pedido)
+        raise HTTPException(status_code=400, detail="carrinho não existe ")
+    return itempedido_func.post_itempedido(db, itempedido)
+
+
+# @router_itempedido.get("/", response_model=List[schemas.ItemPedido])
+# def read_transportadoras(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "itempedido",  db: Session = Depends(get_db)):
+#     db_transp = itempedido_func.get_itempedido_itempedido(db, skip, limit, filter)
+#     return db_transp
+
+
+@router_itempedido.get("/{idPedido}", response_model=List[schemas.ItemPedido])
+def read_itempedido_idPedido(idPedido, db: Session = Depends(get_db)):
+    db_itempedido = itempedido_func.get_itempedido_idPedido(db, idPedido)
+    return db_itempedido
+ 
+
+@router_itempedido.put("/{idPedido}", response_model=schemas.ItemPedido)
+def update_trasportadora(idPedido, itempedido: schemas.ItemPedido, db: Session = Depends(get_db)):
+    db_itempedido = itempedido_func.get_itempedido_idPedido_idItem(db, itempedido.idItem, idPedido)
+    if not db_itempedido:
+        raise HTTPException(status_code=400, detail="register not exist")
+    return itempedido_func.put_itempedido_idPedido(db, idPedido, itempedido)
+
+
+@router_itempedido.delete("/{idPedido}/{idItem}")
+def delete_trasportadora(idPedido: int, idItem: int, db: Session = Depends(get_db)):
+    db_itempedido = itempedido_func.get_itempedido_idPedido_idItem(db, idItem, idPedido)
+    if not db_itempedido:
+        raise HTTPException(status_code=400, detail="register not exist")
+    return itempedido_func.delete_itempedido_idPedido_idItem(db, idItem, idPedido)
+    # return {"delete": deleted}

@@ -26,12 +26,12 @@ def create_trasportadora(transportadora: schemas.Transportadora, db: Session = D
     db_transp = transportadora_func.get_trasportadora_idErpTransp(db, transportadora.idErpTransp)
     if db_transp:
         raise HTTPException(status_code=400, detail="Email already registered")
-    return transportadora_func.post_trasportadora(db, transportadora=transportadora)
+    return transportadora_func.post_trasportadora(db, transportadora)
 
 
 @router_transportadoras.get("/", response_model=List[schemas.Transportadora])
 def read_transportadoras(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idErpTransp",  db: Session = Depends(get_db)):
-    db_transp = transportadora_func.get_trasportadora(db, skip=skip, limit=limit, filter=filter)
+    db_transp = transportadora_func.get_trasportadora(db, skip, limit, filter)
     return db_transp
 
 
@@ -46,7 +46,7 @@ def update_trasportadora(idTransp, transportadora: schemas.Transportadora, db: S
     db_transp = transportadora_func.get_trasportadora_idTransp(db, idTransp)
     if not db_transp:
         raise HTTPException(status_code=400, detail="register not exist")
-    return transportadora_func.put_trasportadora_idTransp(db=db, idTransp=idTransp, transportadora=transportadora)
+    return transportadora_func.put_trasportadora_idTransp(db, idTransp, transportadora)
 
 
 @router_transportadoras.delete("/{idTransp}")

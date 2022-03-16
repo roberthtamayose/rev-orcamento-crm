@@ -121,3 +121,18 @@ class Pedido(BaseModel):
 
    class Config:
       orm_mode = True
+
+
+class ItemPedido(BaseModel):
+   idItem: Optional[int] = None
+   codProduto: str
+   nmProduto: str
+   idErpColecao: str
+   vlUnitario: float
+   vlDesconto: float
+   vlTotal: float
+   qtdItem: float
+   idPedido: int
+
+   class Config:
+      orm_mode = True
