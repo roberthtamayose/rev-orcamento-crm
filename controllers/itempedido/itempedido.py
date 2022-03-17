@@ -23,12 +23,13 @@ def get_db():
         db.close()
 
 
+# id_Marca ou id_Cliente verificar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 @router_itempedido.post("/", response_model=List[schemas.ItemPedido])
-def create_trasportadora(itempedido: List[schemas.ItemPedido], db: Session = Depends(get_db)):
+def create_trasportadora(idFilial: int, itempedido: List[schemas.ItemPedido], db: Session = Depends(get_db)):
     db_itempedido = pedido_func.get_pedido_idPedido_ativo(db, itempedido[0].idPedido)
     if not db_itempedido:
         # pedido_func.post_pedido(db, schemas.Pedido)
-        raise HTTPException(status_code=400, detail="carrinho não existe ")
+        return itempedido_func.post_itempedido_idFilial(db, itempedido, idFilial)      
     return itempedido_func.post_itempedido(db, itempedido)
 
 

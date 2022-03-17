@@ -132,7 +132,7 @@ class ItemPedido(BaseModel):
    vlDesconto: float
    vlTotal: float
    qtdItem: float
-   idPedido: int
+   idPedido: Optional[int] = None
 
    class Config:
       orm_mode = True

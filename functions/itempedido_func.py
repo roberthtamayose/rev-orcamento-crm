@@ -14,9 +14,32 @@ def post_itempedido(db: Session, itempedido: List[schemas.ItemPedido]):
             result.append(db_itempedido)
             db.add(db_itempedido)
             db.commit()
-    db.refresh(db_itempedido)
+        db.refresh(db_itempedido)
     return result
-
+   
+   
+# id_Marca ou id_Cliente verificar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+def post_itempedido_idFilial(db: Session, itempedido: List[schemas.ItemPedido], idFilial: Optional[int]):
+    existped = pedido_func.get_pedido_idPedido(db, itempedido[0].idPedido)
+    result = []
+    if existped:
+        for item in itempedido:
+            db_itempedido = models.ItemPedido(codProduto = item.codProduto, nmProduto = item.nmProduto, idErpColecao = item.idErpColecao, vlUnitario = item.vlUnitario, vlDesconto = item.vlDesconto, vlTotal = item.vlTotal,qtdItem = item.qtdItem, idPedido = item.idPedido)
+            result.append(db_itempedido)
+            db.add(db_itempedido)
+            db.commit()
+            db.refresh(db_itempedido)
+        return result
+    else:
+        cabped = pedido_func.post_pedido_idfilial_idUsuario (db, idFilial, 3)
+        for item in itempedido:
+            db_itempedido = models.ItemPedido(codProduto = item.codProduto, nmProduto = item.nmProduto, idErpColecao = item.idErpColecao, vlUnitario = item.vlUnitario, vlDesconto = item.vlDesconto, vlTotal = item.vlTotal,qtdItem = item.qtdItem, idPedido = cabped.idPedido)
+            result.append(db_itempedido)
+            db.add(db_itempedido)
+            db.commit()
+            db.refresh(db_itempedido)
+        return result
+    
 
 def get_itempedido_idPedido(db: Session, idPedido):
     existped = pedido_func.get_pedido_idPedido(db, idPedido)

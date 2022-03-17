@@ -14,6 +14,16 @@ idFilial = pedido.idFilial, idUsuario = pedido.idUsuario, dtEmissao = pedido.dtE
     return db_ped
 
 
+# id_Marca ou id_Cliente verificar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+def post_pedido_idfilial_idUsuario(db: Session, idFilial: int, idUsuario: int):
+    db_ped = models.Pedido(codPedido = "", transportadora = "", redespacho = "", tpFrete = "", obsPedido = "", obsFiscal = "", condPagamento = "", vlTotal = 0, idCliente = 1, idMarca = 1,
+idFilial = idFilial, idUsuario = idUsuario, dtEmissao = "", dtVencimento = "", ativo = 1, status = 1)
+    db.add(db_ped)
+    db.commit()
+    db.refresh(db_ped)
+    return db_ped
+
+
 def get_pedido(db: Session, skip: Optional[int] = 0, limit: Optional[int] = 10, filter: Optional[str]= "idPedido" ):
     return db.query(models.Pedido).order_by(filter).offset(skip).limit(limit).all()
 
