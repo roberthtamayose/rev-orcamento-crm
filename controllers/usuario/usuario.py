@@ -29,15 +29,22 @@ def post_usuario(usuario: schemas.Usuario, db: Session = Depends(get_db)):
     return usuario_func.post_usuario(db, usuario)
 
 
+# @router_usuario.get("/", response_model=List[schemas.Usuario])
+# def read_usuario(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "nmUsuario",  db: Session = Depends(get_db)):
+#     db_User = usuario_func.get_usuario(db, skip, limit, filter)
+#     return db_User
+
+
 @router_usuario.get("/", response_model=List[schemas.Usuario])
-def read_usuario(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "nmUsuario",  db: Session = Depends(get_db)):
-    db_User = usuario_func.get_usuario(db, skip, limit, filter)
-    return db_User
-
-
-@router_usuario.get("/{idUsuario}", response_model=schemas.Usuario)
-def read_usuario_idUsuario(idUsuario: int , db: Session = Depends(get_db)):
-    db_User = usuario_func.get_usuario_idUsuario(db, idUsuario)
+def read_usuario_idUsuario(idUsuario: Optional[int] = None, emailUsuario: Optional[str] = None, skip: Optional[int] = 0, limit: Optional[int] = 10, filter: Optional[str]= "nmUsuario", db: Session = Depends(get_db)):
+    if idUsuario and emailUsuario :
+        db_User = usuario_func.get_usuario_idUsuario_emailUsuario(db, idUsuario, emailUsuario)
+    elif idUsuario and not emailUsuario :
+        db_User = usuario_func.get_usuario_idUsuario(db, idUsuario)
+    elif emailUsuario and not idUsuario:
+        db_User = usuario_func.get_usuario_emailUsuario(db, emailUsuario)
+    elif not emailUsuario and not idUsuario:
+        db_User = usuario_func.get_usuario(db, skip, limit, filter)
     return db_User
  
 

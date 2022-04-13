@@ -17,16 +17,20 @@ def get_usuario(db: Session, skip: Optional[int] = None, limit: Optional[int] = 
 
 
 def get_usuario_emailUsuario(db: Session, emailUsuario: str):
-    return db.query(models.Usuario).filter(models.Usuario.emailUsuario == emailUsuario).first()
+    return db.query(models.Usuario).filter(models.Usuario.emailUsuario == emailUsuario).all()
 
 
 def get_usuario_idUsuario(db: Session, idUsuario: str):
-    return db.query(models.Usuario).filter(models.Usuario.idUsuario == idUsuario).first()
+    return db.query(models.Usuario).filter(models.Usuario.idUsuario == idUsuario).all()
 
 
 def get_usuario_idErpUser(db: Session, idErpUser: str):
-    return db.query(models.Usuario).filter(models.Usuario.idErpUser == idErpUser).first()
+    return db.query(models.Usuario).filter(models.Usuario.idErpUser == idErpUser).all()
 
+
+def get_usuario_idUsuario_emailUsuario(db: Session, idUsuario: str, emailUsuario: str):
+    return db.query(models.Usuario).filter(models.Usuario.idUsuario == idUsuario, models.Usuario.emailUsuario == emailUsuario).all()
+    
 
 def put_usuario_idUsuario(db: Session, idUsuario: int, usuario: schemas.Usuario):
     db_usuario =  db.query(models.Usuario).filter(models.Usuario.idUsuario == idUsuario).first()

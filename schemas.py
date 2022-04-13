@@ -111,7 +111,7 @@ class Pedido(BaseModel):
    condPagamento: str
    vlTotal: float
    idCliente: int
-   idMarca: int
+   idMarca: Optional[int] = None
    idFilial: int
    idUsuario: int
    dtEmissao: Optional[date] = None      ##ajuste p/ data

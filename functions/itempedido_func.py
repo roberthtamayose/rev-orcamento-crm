@@ -42,13 +42,13 @@ def post_itempedido_idFilial(db: Session, itempedido: List[schemas.ItemPedido], 
     
 
 def get_itempedido_idPedido(db: Session, idPedido):
-    existped = pedido_func.get_pedido_idPedido(db, idPedido)
+    existped = pedido_func.get_pedido_idPedido_carrinho(db, idPedido)
     if existped:
         return db.query(models.ItemPedido).filter(models.ItemPedido.idPedido == idPedido).all()
-
+    return []
 
 def get_itempedido_idPedido_idItem(db: Session, idItem, idPedido):
-    return db.query(models.ItemPedido).filter(models.ItemPedido.idItem == idItem, models.ItemPedido.idPedido == idPedido).first()
+    return db.query(models.ItemPedido).filter(models.ItemPedido.idItem == idItem, models.ItemPedido.idPedido == idPedido, ).first()
 
 
 # def get_itempedido(db: Session, skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "nmTransp" ):
@@ -80,8 +80,8 @@ def delete_itempedido_idPedido_idItem(db: Session, idItem: int, idPedido: int):
     return db_itempedido
 
 
-# def delete_itempedido_idTransp(db: Session, idTransp: int):
-#     db_itempedido =  db.query(models.ItemPedido).filter(models.ItemPedido.idTransp == idTransp).first()
-#     db.delete(db_itempedido)
-#     db.commit()
-#     return db_itempedido
+def delete_itempedido(db: Session, idPedido: int):
+    db_itempedido =  db.query(models.ItemPedido).filter(models.ItemPedido.idPedido == idPedido).delete(synchronize_session="evaluate")
+    # db.delete(db_itempedido)
+    db.commit()
+    return db_itempedido
