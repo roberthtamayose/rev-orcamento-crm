@@ -28,7 +28,7 @@ def get_db():
 def check_user(data, db):
     user = usuario_func.get_usuario_emailUsuario(db, data.email)
     if user:
-        if data.email == user.emailUsuario and data.password == user.senhaUsuario:
+        if data.email == user[0].emailUsuario and data.password == user[0].senhaUsuario:
             return True
     return False
 

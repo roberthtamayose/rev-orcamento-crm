@@ -136,3 +136,19 @@ class ItemPedido(BaseModel):
 
    class Config:
       orm_mode = True
+
+
+class Preco(BaseModel):
+   idPreco: Optional[int] = None
+   codTab: str
+   codProduto: str
+   prc: float
+   ipi: float
+   prcIpi: float
+   prcRevenda: float
+   prcFinal: float
+   qtdMinima: float
+   ativo: int
+
+   class Config:
+      orm_mode = True

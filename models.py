@@ -124,3 +124,19 @@ class ItemPedido(Base):
    vlTotal = Column(Float)
    qtdItem = Column(Float)
    idPedido = Column(Integer)
+
+
+
+class Preco(Base):
+   __tablename__ = "tb_preco"
+
+   idPreco = Column(Integer, primary_key=True, index=True)
+   codTab = Column(String)
+   codProduto = Column(String)
+   prc = Column(Float)
+   ipi = Column(Float)
+   prcIpi = Column(Float)
+   prcRevenda = Column(Float)
+   prcFinal = Column(Float)
+   qtdMinima = Column(Float)
+   ativo = Column(Integer)
