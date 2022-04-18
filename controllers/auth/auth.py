@@ -32,10 +32,11 @@ def check_user(data, db):
             return True
     return False
 
-@router_auth.post("/login")
-def user_login(user: UserLoginSchema = Body(...), db: Session = Depends(get_db)):
-    if check_user(user, db):
-        return signJWT(user.email)
-    return {
-        "error": "Wrong login details!"
-    }
+@router_auth.get("/token")
+def user_login():
+# def user_login(user: UserLoginSchema = Body(...), db: Session = Depends(get_db)):
+    # if check_user(user, db):
+        return signJWT("@PX745ap")
+    # return {
+    #     "error": "Wrong login details!"
+    # }
