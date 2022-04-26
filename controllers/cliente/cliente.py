@@ -1,9 +1,13 @@
 from typing import List, Optional
 
-from fastapi import Depends, FastAPI, HTTPException, APIRouter
+from fastapi import Depends, FastAPI, HTTPException, APIRouter, Query
 from sqlalchemy.orm import Session
 
 import functions.cliente_func  as cliente_func 
+import functions.usuario_func  as usuario_func 
+import functions.vendedor_func  as vendedor_func 
+
+
 import models, schemas
 from database import SessionLocal, engine
 
@@ -20,8 +24,13 @@ def get_db():
     finally:
         db.close()
 
+# def read_cliente(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idCliente", idCliente:Optional[int] = None, idVendedor:Optional[int] = None, idUsuario:Optional[int] = None, db: Session = Depends(get_db)):
 
 @router_cliente.get("/", response_model=List[schemas.Cliente])
-def read_cliente(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idCliente", idCliente:Optional[int] = None, idVendedor:Optional[int] = None, db: Session = Depends(get_db)):
-    db_Cliente = cliente_func.get_clientes(db, skip, limit, filter, idCliente, idVendedor)
+def read_cliente(skip: Optional[int] = None, limit: Optional[int] = None, order: list[str] | None = Query(None), filter: list[str] | None = Query(None), idUsuario:Optional[int] = None, db: Session = Depends(get_db)):
+    if idUsuario:
+        db_Vend = vendedor_func.get_vendedor_idUsuario(db, idUsuario)
+        db_Cliente = cliente_func.get_clientes(db, skip, limit, order, filter, db_Vend.idVendedor) if db_Vend else []
+    else:
+        db_Cliente = cliente_func.get_clientes(db, skip, limit, order, filter)
     return db_Cliente

@@ -4,6 +4,8 @@ from fastapi import Depends, FastAPI, HTTPException, APIRouter
 from sqlalchemy.orm import Session
 
 import functions.usuario_func  as usuario_func 
+import functions.vendedor_func as vendedor_func 
+
 import models, schemas
 from database import SessionLocal, engine
 
@@ -36,15 +38,25 @@ def post_usuario(usuario: schemas.Usuario, db: Session = Depends(get_db)):
 
 
 @router_usuario.get("/", response_model=List[schemas.Usuario])
-def read_usuario_idUsuario(idUsuario: Optional[int] = None, emailUsuario: Optional[str] = None, skip: Optional[int] = 0, limit: Optional[int] = 10, filter: Optional[str]= "nmUsuario", db: Session = Depends(get_db)):
-    if idUsuario and emailUsuario :
+def read_usuario_idUsuario(idUsuario: Optional[int] = None, emailUsuario: Optional[str] = None, idVendedor: Optional[int] = None, skip: Optional[int] = 0, limit: Optional[int] = None, filter: Optional[str]= "nmUsuario", db: Session = Depends(get_db)):
+    if idUsuario and emailUsuario and idVendedor:
+        db_Vend = vendedor_func.get_vendedor_idVendedor(db, idVendedor)
+        # if db_Vend and db_Vend.idUsuario == idUsuario:
+        db_User = usuario_func.get_usuario_idUsuario_emailUsuario(db, idUsuario, emailUsuario) if db_Vend and db_Vend.idUsuario == idUsuario else []
+        # else:
+        #     db_User = []
+    elif idUsuario and emailUsuario and not idVendedor:
         db_User = usuario_func.get_usuario_idUsuario_emailUsuario(db, idUsuario, emailUsuario)
-    elif idUsuario and not emailUsuario :
+    elif idUsuario and not emailUsuario and not idVendedor:
         db_User = usuario_func.get_usuario_idUsuario(db, idUsuario)
-    elif emailUsuario and not idUsuario:
+    elif emailUsuario and not idUsuario and not idVendedor:
         db_User = usuario_func.get_usuario_emailUsuario(db, emailUsuario)
-    elif not emailUsuario and not idUsuario:
+    elif idVendedor and not emailUsuario and not idUsuario:
+        db_Vend = vendedor_func.get_vendedor_idVendedor(db, idVendedor)
+        db_User = usuario_func.get_usuario_idUsuario(db, db_Vend.idUsuario)  if db_Vend else []
+    elif not emailUsuario and not idUsuario and not idVendedor:
         db_User = usuario_func.get_usuario(db, skip, limit, filter)
+   
     return db_User
  
 

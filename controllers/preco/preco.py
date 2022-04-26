@@ -22,7 +22,7 @@ def get_db():
 
 
 @router_preco.get("/", response_model=List[schemas.Preco])
-def get_preco(skip: Optional[int] = 0, limit: Optional[int] = 10, filter: Optional[str]= "codProduto", codProduto: Optional[str] = None, db: Session = Depends(get_db)):
+def get_preco(skip: Optional[int] = 0, limit: Optional[int] = None, filter: Optional[str]= "codProduto", codProduto: Optional[str] = None, db: Session = Depends(get_db)):
     if codProduto :
         db_Ped = preco_func.get_preco_codProduto(db, codProduto)
     else:

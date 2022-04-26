@@ -24,7 +24,7 @@ idFilial = idFilial, idUsuario = idUsuario, dtEmissao = "", dtVencimento = "", a
     return db_ped
 
 
-def get_pedido(db: Session, skip: Optional[int] = 0, limit: Optional[int] = 10, filter: Optional[str]= "idPedido" ):
+def get_pedido(db: Session, skip: Optional[int] = 0, limit: Optional[int] = None, filter: Optional[str]= "idPedido" ):
     return db.query(models.Pedido).order_by(filter).offset(skip).limit(limit).all()
 
 
@@ -40,15 +40,15 @@ def get_pedido_codPedido(db: Session, codPedido: str):
     return db.query(models.Pedido).filter(models.Pedido.codPedido == codPedido).first()
 
 
-def get_pedido_idFilial(db: Session, idFilial: int, skip: Optional[int] = 0, limit: Optional[int] = 10, filter: Optional[str]= "idPedido"):
+def get_pedido_idFilial(db: Session, idFilial: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: Optional[str]= "idPedido"):
     return db.query(models.Pedido).filter(models.Pedido.idFilial == idFilial).order_by(filter).offset(skip).limit(limit).all()
 
 
-def get_pedido_idUsuario(db: Session, idUsuario: int, skip: Optional[int] = 0, limit: Optional[int] = 10, filter: Optional[str]= "idPedido"):
+def get_pedido_idUsuario(db: Session, idUsuario: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: Optional[str]= "idPedido"):
     return db.query(models.Pedido).filter(models.Pedido.idUsuario == idUsuario).order_by(filter).offset(skip).limit(limit).all()
 
 
-def get_pedido_idFilial_idUsuario(db: Session, idUsuario: int, idFilial: int, skip: Optional[int] = 0, limit: Optional[int] = 10, filter: Optional[str]= "idPedido"):
+def get_pedido_idFilial_idUsuario(db: Session, idUsuario: int, idFilial: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: Optional[str]= "idPedido"):
     return db.query(models.Pedido).filter(models.Pedido.idFilial == idFilial, models.Pedido.idUsuario == idUsuario).order_by(filter).offset(skip).limit(limit).all()
 
 
