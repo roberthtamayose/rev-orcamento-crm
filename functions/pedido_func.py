@@ -24,7 +24,7 @@ idFilial = idFilial, idUsuario = idUsuario, dtEmissao = "", dtVencimento = "", a
     return db_ped
 
 
-def get_pedido(db: Session, skip: Optional[int] = 0, limit: Optional[int] = None, filter: Optional[str]= "idPedido" ):
+def get_pedido(db: Session, skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idPedido" ):
     return db.query(models.Pedido).order_by(filter).offset(skip).limit(limit).all()
 
 

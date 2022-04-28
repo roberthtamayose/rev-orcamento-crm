@@ -103,14 +103,14 @@ class Colecoes(BaseModel):
 class Pedido(BaseModel):
    idPedido: Optional[int] = None
    codPedido: Optional[str] = None
-   transportadora: str
+   transportadora: Optional[str] = None
    redespacho: Optional[str] = None
-   tpFrete: str
-   obsPedido: str
+   tpFrete: Optional[str] = None
+   obsPedido: Optional[str] = None
    obsFiscal: Optional[str] = None
-   condPagamento: str
-   vlTotal: float
-   idCliente: int
+   condPagamento: Optional[str] = None
+   vlTotal: Optional[float] = None
+   idCliente: Optional[int] = None
    idMarca: Optional[int] = None
    idFilial: int
    idUsuario: int
