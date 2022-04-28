@@ -9,7 +9,7 @@ def get_vendedor(db: Session, skip: Optional[int] = None, limit: Optional[int] =
 
 
 def get_vendedor_idVendedor(db: Session, idVendedor: int):
-    return db.query(models.Vendedor).filter(models.Vendedor.idVendedor == idVendedor).first()
+    return db.query(models.Vendedor).filter(models.Vendedor.idVendedor == idVendedor).all()
 
 
 def get_vendedor_idUsuario(db: Session, idUsuario: int):

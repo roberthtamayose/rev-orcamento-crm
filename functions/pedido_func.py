@@ -29,7 +29,7 @@ def get_pedido(db: Session, skip: Optional[int] = None, limit: Optional[int] = N
 
 
 def get_pedido_idPedido(db: Session, idPedido: int):
-    return db.query(models.Pedido).filter(models.Pedido.idPedido == idPedido).first()
+    return db.query(models.Pedido).filter(models.Pedido.idPedido == idPedido).all()
 
 
 def get_pedido_idPedido_carrinho(db: Session, idPedido: int):

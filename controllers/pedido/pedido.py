@@ -30,21 +30,17 @@ def create_pedido(pedido: schemas.Pedido, db: Session = Depends(get_db)):
 
 
 @router_pedido.get("/", response_model=List[schemas.Pedido])
-def get_pedido(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idPedido", idFilial:Optional[int] = None, idUsuario:Optional[int] = None, db: Session = Depends(get_db)):
+def get_pedido(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idPedido", idFilial:Optional[int] = None, idUsuario:Optional[int] = None, idPedido:Optional[int] = None, db: Session = Depends(get_db)):
     if idFilial and idUsuario :
         db_Ped = pedido_func.get_pedido_idFilial_idUsuario(db, idUsuario, idFilial, skip, limit, filter)
     elif idFilial and not idUsuario:
         db_Ped = pedido_func.get_pedido_idFilial(db, idFilial, skip, limit, filter)
     elif idUsuario and not idFilial:
         db_Ped = pedido_func.get_pedido_idUsuario(db, idUsuario, skip, limit, filter)
+    elif idPedido and not idFilial and not idUsuario:
+        db_Ped = pedido_func.get_pedido_idPedido(db, idPedido)
     else:
         db_Ped = pedido_func.get_pedido(db, skip, limit, filter)
-    return db_Ped
-
-
-@router_pedido.get("/{idPedido}", response_model=schemas.Pedido)
-def read_pedido_idPedido(idPedido: int, db: Session = Depends(get_db)):
-    db_Ped = pedido_func.get_pedido_idPedido(db, idPedido)
     return db_Ped
 
 

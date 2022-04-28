@@ -22,12 +22,9 @@ def get_db():
 
 
 @router_vendedor.get("/", response_model=List[schemas.Vendedor])
-def read_vendedor(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idVendedor",  db: Session = Depends(get_db)):
-    db_ConPag = vendedor_func.get_vendedor(db, skip, limit, filter)
-    return db_ConPag
-
-
-@router_vendedor.get("/{idVendedor}", response_model=schemas.Vendedor)
-def read_vendedor_idVendedor(idVendedor, db: Session = Depends(get_db)):
-    db_ConPag = vendedor_func.get_vendedor_idVendedor(db, idVendedor)
-    return db_ConPag
+def read_vendedor(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idVendedor", idVendedor: Optional[int] = None, db: Session = Depends(get_db)):
+    if idVendedor:
+        db_Vend= vendedor_func.get_vendedor_idVendedor(db, idVendedor)
+    else:
+        db_Vend = vendedor_func.get_vendedor(db, skip, limit, filter)
+    return db_Vend

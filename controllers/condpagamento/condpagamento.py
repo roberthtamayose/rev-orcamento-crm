@@ -30,15 +30,18 @@ def create_condpagamento(condpagamento: schemas.CondPagamento, db: Session = Dep
 
 
 @router_condpagamento.get("/", response_model=List[schemas.CondPagamento])
-def read_condpagamento(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idErpCondPag",  db: Session = Depends(get_db)):
-    db_ConPag = condpagamento_func.get_condpagamento(db, skip, limit, filter)
+def read_condpagamento(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idErpCondPag", idCondPag: Optional[int] = None, db: Session = Depends(get_db)):
+    if idCondPag:
+        db_ConPag = condpagamento_func.get_condpagamento_idCondPag(db, idCondPag)
+    else:
+        db_ConPag = condpagamento_func.get_condpagamento(db, skip, limit, filter)
     return db_ConPag
 
 
-@router_condpagamento.get("/{idCondPag}", response_model=schemas.CondPagamento)
-def read_condpagamento_idCondPag(idCondPag: int, db: Session = Depends(get_db)):
-    db_ConPag = condpagamento_func.get_condpagamento_idCondPag(db, idCondPag)
-    return db_ConPag
+# @router_condpagamento.get("/{idCondPag}", response_model=schemas.CondPagamento)
+# def read_condpagamento_idCondPag(idCondPag: int, db: Session = Depends(get_db)):
+#     db_ConPag = condpagamento_func.get_condpagamento_idCondPag(db, idCondPag)
+#     return db_ConPag
  
 
 @router_condpagamento.put("/{idCondPag}", response_model=schemas.CondPagamento)

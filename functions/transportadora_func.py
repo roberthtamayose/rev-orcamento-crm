@@ -13,7 +13,7 @@ def post_trasportadora(db: Session, transportadora: schemas.Transportadora):
 
 
 def get_trasportadora_idTransp(db: Session, idTransp: str):
-    return db.query(models.Transportadora).filter(models.Transportadora.idTransp == idTransp).first()
+    return db.query(models.Transportadora).filter(models.Transportadora.idTransp == idTransp).all()
 
 
 def get_trasportadora_idErpTransp(db: Session, idErpTransp: str):

@@ -28,9 +28,3 @@ def get_preco(skip: Optional[int] = None, limit: Optional[int] = None, filter: O
     else:
         db_Ped = preco_func.get_preco(db, skip, limit, filter)
     return db_Ped
-
-
-# @router_pedido.get("/{idPedido}", response_model=schemas.Pedido)
-# def read_pedido_idPedido(idPedido: int, db: Session = Depends(get_db)):
-#     db_Ped = pedido_func.get_pedido_idPedido(db, idPedido)
-#     return db_Ped

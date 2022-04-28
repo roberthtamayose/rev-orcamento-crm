@@ -18,7 +18,7 @@ def get_filial(db: Session):
 
 def get_filial_idFilial(db: Session, idFilial):
    if idFilial:
-      return db.query(models.Filial).filter(models.Filial.idFilial == idFilial).first()
+      return db.query(models.Filial).filter(models.Filial.idFilial == idFilial).all()
 
 
 def get_filial_codFilial(db: Session, codFilial):

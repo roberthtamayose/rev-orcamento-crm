@@ -17,7 +17,7 @@ def get_condpagamento(db: Session, skip: Optional[int] = None, limit: Optional[i
 
 
 def get_condpagamento_idCondPag(db: Session, idCondPag: int):
-    return db.query(models.CondPagamento).filter(models.CondPagamento.idCondPag == idCondPag).first()
+    return db.query(models.CondPagamento).filter(models.CondPagamento.idCondPag == idCondPag).all()
 
 
 def get_condpagamento_idErpCondPag(db: Session, idErpCondPag: str):

@@ -30,14 +30,17 @@ def create_filial(filial: schemas.Filial, db: Session = Depends(get_db)):
 
 
 @router_filiais.get("/", response_model=List[schemas.Filial])
-def read_filiais(db: Session = Depends(get_db)):
-    db_filial = filial_func.get_filial(db)
+def read_filiais(idFilial: Optional[str] = None, db: Session = Depends(get_db)):
+    if idFilial:
+        db_filial = filial_func.get_filial_idFilial(db, idFilial)
+    else:
+        db_filial = filial_func.get_filial(db)
     return db_filial
  
-@router_filiais.get("/{idFilial}", response_model=schemas.Filial)
-def read_filial(idFilial, db: Session = Depends(get_db)):
-    db_filial = filial_func.get_filial_idFilial(db, idFilial)
-    return db_filial
+# @router_filiais.get("/{idFilial}", response_model=schemas.Filial)
+# def read_filial(idFilial, db: Session = Depends(get_db)):
+#     db_filial = filial_func.get_filial_idFilial(db, idFilial)
+#     return db_filial
  
 @router_filiais.put("/{idFilial}", response_model=schemas.Filial)
 def update_filial(idFilial, filial: schemas.Filial, db: Session = Depends(get_db)):
