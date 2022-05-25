@@ -1,6 +1,7 @@
 from typing import Optional
 from sqlalchemy.orm import Session
-
+from fastapi import Query
+from sqlalchemy.sql import text
 import models, schemas
 
 
@@ -24,8 +25,9 @@ idFilial = idFilial, idUsuario = idUsuario, dtEmissao = "", dtVencimento = "", a
     return db_ped
 
 
-def get_pedido(db: Session, skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idPedido" ):
-    return db.query(models.Pedido).order_by(filter).offset(skip).limit(limit).all()
+def get_pedido(db: Session, skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None) ):
+    order = ','.join([str(i) for i in filter]) if filter else 'idPedido'
+    return db.query(models.Pedido).order_by(text(order)).offset(skip).limit(limit).all()
 
 
 def get_pedido_idPedido(db: Session, idPedido: int):
@@ -40,16 +42,19 @@ def get_pedido_codPedido(db: Session, codPedido: str):
     return db.query(models.Pedido).filter(models.Pedido.codPedido == codPedido).first()
 
 
-def get_pedido_idFilial(db: Session, idFilial: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: Optional[str]= "idPedido"):
-    return db.query(models.Pedido).filter(models.Pedido.idFilial == idFilial).order_by(filter).offset(skip).limit(limit).all()
+def get_pedido_idFilial(db: Session, idFilial: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: list[str] | None = Query(None)):
+    order = ','.join([str(i) for i in filter]) if filter else 'idPedido'
+    return db.query(models.Pedido).filter(models.Pedido.idFilial == idFilial).order_by(text(order)).offset(skip).limit(limit).all()
 
 
-def get_pedido_idUsuario(db: Session, idUsuario: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: Optional[str]= "idPedido"):
-    return db.query(models.Pedido).filter(models.Pedido.idUsuario == idUsuario).order_by(filter).offset(skip).limit(limit).all()
+def get_pedido_idUsuario(db: Session, idUsuario: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: list[str] | None = Query(None)):
+    order = ','.join([str(i) for i in filter]) if filter else 'idPedido'
+    return db.query(models.Pedido).filter(models.Pedido.idUsuario == idUsuario).order_by(text(order)).offset(skip).limit(limit).all()
 
 
-def get_pedido_idFilial_idUsuario(db: Session, idUsuario: int, idFilial: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: Optional[str]= "idPedido"):
-    return db.query(models.Pedido).filter(models.Pedido.idFilial == idFilial, models.Pedido.idUsuario == idUsuario).order_by(filter).offset(skip).limit(limit).all()
+def get_pedido_idFilial_idUsuario(db: Session, idUsuario: int, idFilial: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: list[str] | None = Query(None)):
+    order = ','.join([str(i) for i in filter]) if filter else 'idPedido'
+    return db.query(models.Pedido).filter(models.Pedido.idFilial == idFilial, models.Pedido.idUsuario == idUsuario).order_by(text(order)).offset(skip).limit(limit).all()
 
 
 def put_pedido_idPedido(db: Session, idPedido: int, pedido: schemas.Pedido):

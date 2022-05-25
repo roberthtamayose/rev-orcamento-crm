@@ -1,5 +1,7 @@
 from typing import Optional
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
+from fastapi import Query
 
 import models, schemas
 
@@ -20,8 +22,9 @@ def get_trasportadora_idErpTransp(db: Session, idErpTransp: str):
     return db.query(models.Transportadora).filter(models.Transportadora.idErpTransp == idErpTransp).first()
 
 
-def get_trasportadora(db: Session, skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "nmTransp" ):
-    return db.query(models.Transportadora).order_by(filter).offset(skip).limit(limit).all()
+def get_trasportadora(db: Session, skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None) ): 
+    order = ','.join([str(i) for i in filter]) if filter else 'nmTransp'
+    return db.query(models.Transportadora).order_by(text(order)).offset(skip).limit(limit).all()
 
 
 def put_trasportadora_idTransp(db: Session, idTransp: int, transportadora: schemas.Transportadora):

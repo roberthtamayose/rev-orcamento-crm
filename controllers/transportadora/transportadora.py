@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from fastapi import Depends, FastAPI, HTTPException, APIRouter
+from fastapi import Depends, FastAPI, HTTPException, APIRouter, Query
 from sqlalchemy.orm import Session
 
 import functions.transportadora_func  as transportadora_func 
@@ -30,7 +30,7 @@ def create_trasportadora(transportadora: schemas.Transportadora, db: Session = D
 
 
 @router_transportadoras.get("/", response_model=List[schemas.Transportadora])
-def read_transportadoras(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idErpTransp", idTransp : Optional[str] = None, db: Session = Depends(get_db)):
+def read_transportadoras(skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None), idTransp : Optional[str] = None, db: Session = Depends(get_db)):
     if idTransp:
         db_transp = transportadora_func.get_trasportadora_idTransp(db, idTransp)
     else:

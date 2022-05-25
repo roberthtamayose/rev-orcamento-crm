@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from fastapi import Depends, FastAPI, HTTPException, APIRouter
+from fastapi import Depends, FastAPI, HTTPException, APIRouter, Query
 from sqlalchemy.orm import Session
 
 import functions.condpagamento_func  as condpagamento_func 
@@ -30,7 +30,7 @@ def create_condpagamento(condpagamento: schemas.CondPagamento, db: Session = Dep
 
 
 @router_condpagamento.get("/", response_model=List[schemas.CondPagamento])
-def read_condpagamento(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idErpCondPag", idCondPag: Optional[int] = None, db: Session = Depends(get_db)):
+def read_condpagamento(skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None), idCondPag: Optional[int] = None, db: Session = Depends(get_db)):
     if idCondPag:
         db_ConPag = condpagamento_func.get_condpagamento_idCondPag(db, idCondPag)
     else:

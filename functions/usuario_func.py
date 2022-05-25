@@ -1,6 +1,7 @@
 from typing import Optional
 from sqlalchemy.orm import Session
-
+from fastapi import Query
+from sqlalchemy.sql import text
 import models, schemas
 
 
@@ -12,8 +13,9 @@ def post_usuario(db: Session, usuario: schemas.Usuario):
     return db_usuario
 
 
-def get_usuario(db: Session, skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "nmUsuario" ):
-    return db.query(models.Usuario).order_by(filter).offset(skip).limit(limit).all()
+def get_usuario(db: Session, skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None) ):
+    order = ','.join([str(i) for i in filter]) if filter else 'nmUsuario'
+    return db.query(models.Usuario).order_by(text(order)).offset(skip).limit(limit).all()
 
 
 def get_usuario_emailUsuario(db: Session, emailUsuario: str):

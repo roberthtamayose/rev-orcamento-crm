@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from fastapi import Depends, FastAPI, HTTPException, APIRouter
+from fastapi import Depends, FastAPI, HTTPException, APIRouter, Query
 from sqlalchemy.orm import Session
 
 import functions.pedido_func as pedido_func 
@@ -30,7 +30,7 @@ def create_pedido(pedido: schemas.Pedido, db: Session = Depends(get_db)):
 
 
 @router_pedido.get("/", response_model=List[schemas.Pedido])
-def get_pedido(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idPedido", idFilial:Optional[int] = None, idUsuario:Optional[int] = None, idPedido:Optional[int] = None, db: Session = Depends(get_db)):
+def get_pedido(skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None), idFilial:Optional[int] = None, idUsuario:Optional[int] = None, idPedido:Optional[int] = None, db: Session = Depends(get_db)):
     if idFilial and idUsuario :
         db_Ped = pedido_func.get_pedido_idFilial_idUsuario(db, idUsuario, idFilial, skip, limit, filter)
     elif idFilial and not idUsuario:
