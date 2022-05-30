@@ -24,8 +24,8 @@ def get_db():
 
 
 @router_disponibilidade.get("/produtos", response_model= List[schemas.Produto])
-def read_produtos(filial: Optional[int] = 1, skip: Optional[int] = 0, limit: Optional[int] = None, filter: list[str] | None = Query(None),  db: Session = Depends(get_db)):
-    db_Disp = disponibilidade_func.get_disponibilidade_produto(db, skip, limit, filter, filial)
+def read_produtos(filial: Optional[int] = 1, codProduto: Optional[str] = None, nmProduto: Optional[str] = None, skip: Optional[int] = 0, limit: Optional[int] = None, filter: list[str] | None = Query(None),  db: Session = Depends(get_db)):
+    db_Disp = disponibilidade_func.get_disponibilidade_produto(db, filial, codProduto, nmProduto, skip, limit, filter)
     return db_Disp
 
 

@@ -18,7 +18,7 @@ idFilial = pedido.idFilial, idUsuario = pedido.idUsuario, dtEmissao = pedido.dtE
 # id_Marca ou id_Cliente verificar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 def post_pedido_idfilial_idUsuario(db: Session, idFilial: int, idUsuario: int):
     db_ped = models.Pedido(codPedido = "", transportadora = "", redespacho = "", tpFrete = "", obsPedido = "", obsFiscal = "", condPagamento = "", vlTotal = 0, idCliente = 1, idMarca = 1,
-idFilial = idFilial, idUsuario = idUsuario, dtEmissao = "", dtVencimento = "", ativo = 1, status = 1)
+idFilial = idFilial, idUsuario = idUsuario, dtEmissao = "", dtVencimento = "", ativo = 1, status = 0)
     db.add(db_ped)
     db.commit()
     db.refresh(db_ped)
@@ -30,31 +30,29 @@ def get_pedido(db: Session, skip: Optional[int] = None, limit: Optional[int] = N
     return db.query(models.Pedido).order_by(text(order)).offset(skip).limit(limit).all()
 
 
+def get_pedido_idPedido_carrinho(db: Session, filial: int, idUsuario: int):
+    return db.query(models.Pedido).filter(models.Pedido.idFilial == filial, models.Pedido.ativo == 1, models.Pedido.status == 0, models.Pedido.idUsuario == idUsuario).first()
+
+
 def get_pedido_idPedido(db: Session, idPedido: int):
     return db.query(models.Pedido).filter(models.Pedido.idPedido == idPedido).all()
-
-
-def get_pedido_idPedido_carrinho(db: Session, idPedido: int):
-    return db.query(models.Pedido).filter(models.Pedido.idPedido == idPedido, models.Pedido.ativo == 1).first()
 
 
 def get_pedido_codPedido(db: Session, codPedido: str):
     return db.query(models.Pedido).filter(models.Pedido.codPedido == codPedido).first()
 
 
-def get_pedido_idFilial(db: Session, idFilial: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: list[str] | None = Query(None)):
+# idFilial, idPedido, idUsuario, idCliente, ativo, status,
+def get_pedido_allParam(db: Session, idFilial: Optional[int] = None, idPedido: Optional[int] = None, idUsuario: Optional[int] = None, idCliente: Optional[int] = None, ativo: Optional[int] = None, status: Optional[int] = None, skip: Optional[int] = 0, limit: Optional[int] = None, filter: list[str] | None = Query(None)):
     order = ','.join([str(i) for i in filter]) if filter else 'idPedido'
-    return db.query(models.Pedido).filter(models.Pedido.idFilial == idFilial).order_by(text(order)).offset(skip).limit(limit).all()
-
-
-def get_pedido_idUsuario(db: Session, idUsuario: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: list[str] | None = Query(None)):
-    order = ','.join([str(i) for i in filter]) if filter else 'idPedido'
-    return db.query(models.Pedido).filter(models.Pedido.idUsuario == idUsuario).order_by(text(order)).offset(skip).limit(limit).all()
-
-
-def get_pedido_idFilial_idUsuario(db: Session, idUsuario: int, idFilial: int, skip: Optional[int] = 0, limit: Optional[int] = None, filter: list[str] | None = Query(None)):
-    order = ','.join([str(i) for i in filter]) if filter else 'idPedido'
-    return db.query(models.Pedido).filter(models.Pedido.idFilial == idFilial, models.Pedido.idUsuario == idUsuario).order_by(text(order)).offset(skip).limit(limit).all()
+    listParamOrig = list(locals().items())
+    listParamFinal=[]
+    for key, value in listParamOrig[1:-4]:
+        if value:
+            listParamFinal.append(f"{key} = {value}")
+    makeitastring = ' and '.join(map(str, listParamFinal))
+    print('makeitastring... ',makeitastring)
+    return db.query(models.Pedido).filter(text(makeitastring)).order_by(text(order)).offset(skip).limit(limit).all()
 
 
 def put_pedido_idPedido(db: Session, idPedido: int, pedido: schemas.Pedido):

@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import Query
 from sqlalchemy.sql import text
 import models, schemas
+import functions.vendedor_func as vendedor_func 
 
 
 def post_usuario(db: Session, usuario: schemas.Usuario):
@@ -10,8 +11,10 @@ def post_usuario(db: Session, usuario: schemas.Usuario):
     db.add(db_usuario)
     db.commit()
     db.refresh(db_usuario)
+    if db_usuario.nivel == 1:
+        vendedor_func.post_vendedor(db, db_usuario.idErpUser, db_usuario.idUsuario)
     return db_usuario
-
+     
 
 def get_usuario(db: Session, skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None) ):
     order = ','.join([str(i) for i in filter]) if filter else 'nmUsuario'

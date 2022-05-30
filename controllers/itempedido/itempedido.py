@@ -25,12 +25,12 @@ def get_db():
 
 # id_Marca ou id_Cliente verificar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 @router_itempedido.post("/", response_model=List[schemas.ItemPedido])
-def create_trasportadora(idFilial: Optional[int], itempedido: List[schemas.ItemPedido], db: Session = Depends(get_db)):
-    db_itempedido = pedido_func.get_pedido_idPedido_carrinho(db, itempedido[0].idPedido)
-    if not db_itempedido:
-        # pedido_func.post_pedido(db, schemas.Pedido)
-        return itempedido_func.post_itempedido_idFilial(db, itempedido, idFilial)      
-    return itempedido_func.post_itempedido(db, itempedido)
+def create_itempedido_idPedido(idFilial, itempedido: List[schemas.ItemPedido], idUsuario, db: Session = Depends(get_db)):
+    # db_itempedido = pedido_func.get_pedido_idPedido_carrinho(db, idFilial, itempedido[0].idPedido, idUsuario) 
+    # if not db_itempedido:
+    #     # pedido_func.post_pedido(db, schemas.Pedido)
+    #     return itempedido_func.post_itempedido_idFilial(db, idFilial, itempedido, idUsuario)
+    return itempedido_func.post_itempedido_idFilial(db, idFilial, itempedido, idUsuario)
 
 
 # @router_itempedido.get("/", response_model=List[schemas.ItemPedido])
@@ -40,13 +40,13 @@ def create_trasportadora(idFilial: Optional[int], itempedido: List[schemas.ItemP
 
 
 @router_itempedido.get("/{idPedido}", response_model=List[schemas.ItemPedido])
-def read_itempedido_idPedido(idPedido, db: Session = Depends(get_db)):
-    db_itempedido = itempedido_func.get_itempedido_idPedido(db, idPedido)
+def read_itempedido_idPedido(idFilial, idUsuario, db: Session = Depends(get_db)):
+    db_itempedido = itempedido_func.get_itempedido_idPedido(db, idFilial, idUsuario)
     return db_itempedido
  
 
 @router_itempedido.put("/{idPedido}", response_model=schemas.ItemPedido)
-def update_trasportadora(idPedido, itempedido: schemas.ItemPedido, db: Session = Depends(get_db)):
+def update_itempedido_idPedido(idPedido, itempedido: schemas.ItemPedido, db: Session = Depends(get_db)):
     db_itempedido = itempedido_func.get_itempedido_idPedido_idItem(db, itempedido.idItem, idPedido)
     if not db_itempedido:
         raise HTTPException(status_code=400, detail="register not exist")
@@ -54,7 +54,7 @@ def update_trasportadora(idPedido, itempedido: schemas.ItemPedido, db: Session =
 
 
 @router_itempedido.delete("/{idPedido}/{idItem}")
-def delete_trasportadora(idPedido: int, idItem: Optional[int], db: Session = Depends(get_db)):
+def delete_itempedido_idPedido(idPedido: int, idItem: Optional[int], db: Session = Depends(get_db)):
     db_itempedido = itempedido_func.get_itempedido_idPedido_idItem(db, idItem, idPedido)
     if not db_itempedido:
         raise HTTPException(status_code=400, detail="register not exist")
@@ -63,7 +63,7 @@ def delete_trasportadora(idPedido: int, idItem: Optional[int], db: Session = Dep
     # delete_itempedido
 
 @router_itempedido.delete("/{idPedido}")
-def delete_trasportadora(idPedido: int, db: Session = Depends(get_db)):
+def delete_itempedido_idPedido(idPedido: int, db: Session = Depends(get_db)):
     db_itempedido = itempedido_func.get_itempedido_idPedido(db, idPedido)
     if not db_itempedido:
         raise HTTPException(status_code=400, detail="register not exist")
