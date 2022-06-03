@@ -40,8 +40,8 @@ def create_itempedido_idPedido(idFilial, itempedido: List[schemas.ItemPedido], i
 
 
 @router_itempedido.get("/{idPedido}", response_model=List[schemas.ItemPedido])
-def read_itempedido_idPedido(idFilial, idUsuario, db: Session = Depends(get_db)):
-    db_itempedido = itempedido_func.get_itempedido_idPedido(db, idFilial, idUsuario)
+def read_itempedido_idPedido(idFilial, idUsuario, idPed:Optional[int] = None, db: Session = Depends(get_db)):
+    db_itempedido = itempedido_func.get_itempedido_idPedido(db, idFilial, idUsuario, idPed)
     return db_itempedido
  
 

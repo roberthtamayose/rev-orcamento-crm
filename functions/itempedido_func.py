@@ -41,10 +41,13 @@ def post_itempedido_idFilial(db: Session, filial, itempedido: List[schemas.ItemP
         return result
     
 
-def get_itempedido_idPedido(db: Session, filial, idUsuario):
-    existped = pedido_func.get_pedido_idPedido_carrinho(db, filial, idUsuario)
-    if existped:
-        return db.query(models.ItemPedido).filter(models.ItemPedido.idPedido == existped.idPedido).all()
+def get_itempedido_idPedido(db: Session, filial, idUsuario, idPedido):
+    if idPedido :
+        return db.query(models.ItemPedido).filter(models.ItemPedido.idPedido == idPedido).all()
+    else:
+        existped = pedido_func.get_pedido_idPedido_carrinho(db, filial, idUsuario)
+        if existped:
+            return db.query(models.ItemPedido).filter(models.ItemPedido.idPedido == existped.idPedido).all()
     return []
 
 def get_itempedido_idPedido_idItem(db: Session, idItem, idPedido):
