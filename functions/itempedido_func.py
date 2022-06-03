@@ -19,8 +19,8 @@ import models, schemas
    
    
 # id_Marca ou id_Cliente verificar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-def post_itempedido_idFilial(db: Session, filial, itempedido: List[schemas.ItemPedido], idUsuario):
-    existped = pedido_func.get_pedido_idPedido_carrinho(db, filial, idUsuario)
+def post_itempedido_idFilial(db: Session, filial, itempedido: List[schemas.ItemPedido], idUsuario, idPedido):
+    existped = pedido_func.get_pedido_idPedido_carrinho(db, filial, idUsuario, idPedido)
     result = []
     if existped:
         for item in itempedido:
