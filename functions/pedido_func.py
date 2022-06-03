@@ -43,7 +43,7 @@ def get_pedido_codPedido(db: Session, codPedido: str):
 
 
 # idFilial, idPedido, idUsuario, idCliente, ativo, status,
-def get_pedido_allParam(db: Session, idFilial: Optional[int] = None, idPedido: Optional[int] = None, idUsuario: Optional[int] = None, idCliente: Optional[int] = None, ativo: Optional[int] = None, status: Optional[int] = None, skip: Optional[int] = 0, limit: Optional[int] = None, filter: list[str] | None = Query(None)):
+def get_pedido_allParam(db: Session, idFilial: Optional[int] = None, idPedido: Optional[int] = None, idUsuario: Optional[int] = None, idCliente: Optional[int] = None, ativo: Optional[int] = None, status: Optional[str] = None, skip: Optional[int] = 0, limit: Optional[int] = None, filter: list[str] | None = Query(None)):
     order = ','.join([str(i) for i in filter]) if filter else 'idPedido'
     listParamOrig = list(locals().items())
     listParamFinal=[]

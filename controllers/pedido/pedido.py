@@ -30,7 +30,7 @@ def create_pedido(pedido: schemas.Pedido, db: Session = Depends(get_db)):
 
 
 @router_pedido.get("/", response_model=List[schemas.Pedido])
-def get_pedido(skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None), idFilial:Optional[int] = None, idUsuario:Optional[int] = None, idPedido:Optional[int] = None, ativo:Optional[int] = None, status:Optional[int] = None, idCliente:Optional[int] = None, db: Session = Depends(get_db)):
+def get_pedido(skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None), idFilial:Optional[int] = None, idUsuario:Optional[int] = None, idPedido:Optional[int] = None, ativo:Optional[int] = None, status:Optional[str] = None, idCliente:Optional[int] = None, db: Session = Depends(get_db)):
     db_Ped = pedido_func.get_pedido_allParam(db, idFilial, idPedido, idUsuario, idCliente, ativo, status, skip, limit, filter)
     return db_Ped
 
