@@ -32,7 +32,7 @@ def get_pedido(db: Session, skip: Optional[int] = None, limit: Optional[int] = N
 
 def get_pedido_idPedido_carrinho(db: Session, filial: int, idUsuario: int, idPedido: Optional[int] = None):
     if idPedido:
-        return db.query(models.Pedido).filter(models.Pedido.idFilial == filial, models.Pedido.ativo == 1, models.Pedido.idPedido == idPedido, models.Pedido.idUsuario == idUsuario).first()
+        return db.query(models.Pedido).filter(models.Pedido.idFilial == filial, models.Pedido.idPedido == idPedido, models.Pedido.idUsuario == idUsuario).first()
     else:
         return db.query(models.Pedido).filter(models.Pedido.idFilial == filial, models.Pedido.ativo == 1, models.Pedido.status == 0, models.Pedido.idUsuario == idUsuario).first()
 
