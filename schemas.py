@@ -53,7 +53,7 @@ class Usuario(BaseModel):
    nmUsuario: str
    sobrenomeUsuario: str
    emailUsuario: str
-   senhaUsuario: str
+   senhaUsuario: Optional[str] = None
    ativo: int
    nivel: int
 

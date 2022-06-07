@@ -44,7 +44,7 @@ def put_usuario_idUsuario(db: Session, idUsuario: int, usuario: schemas.Usuario)
     db_usuario.nmUsuario =  usuario.nmUsuario
     db_usuario.sobrenomeUsuario =  usuario.sobrenomeUsuario
     db_usuario.emailUsuario =  usuario.emailUsuario
-    db_usuario.senhaUsuario =  usuario.senhaUsuario
+    db_usuario.senhaUsuario =  usuario.senhaUsuario or db_usuario.senhaUsuario 
     db_usuario.ativo =  usuario.ativo
     db_usuario.nivel =  usuario.nivel
 
