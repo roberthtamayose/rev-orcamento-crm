@@ -61,22 +61,22 @@ def get_pedido_allParam(db: Session, idFilial: Optional[int] = None, idPedido: O
 def put_pedido_idPedido(db: Session, idPedido: int, pedido: schemas.Pedido):
     db_ped =  db.query(models.Pedido).filter(models.Pedido.idPedido == idPedido).first()
 
-    db_ped.codPedido = pedido.codPedido
-    db_ped.transportadora = pedido.transportadora
-    db_ped.redespacho = pedido.redespacho
-    db_ped.tpFrete = pedido.tpFrete
-    db_ped.obsPedido = pedido.obsPedido
-    db_ped.obsFiscal = pedido.obsFiscal
-    db_ped.condPagamento = pedido.condPagamento
-    db_ped.vlTotal = pedido.vlTotal
-    db_ped.idCliente = pedido.idCliente
-    db_ped.idMarca = pedido.idMarca
-    db_ped.idFilial = pedido.idFilial
-    db_ped.idUsuario = pedido.idUsuario
-    db_ped.dtEmissao = pedido.dtEmissao
-    db_ped.dtVencimento = pedido.dtVencimento
-    db_ped.ativo = pedido.ativo
-    db_ped.status = pedido.status
+    db_ped.codPedido = pedido.codPedido or db_ped.codPedido
+    db_ped.transportadora = pedido.transportadora or db_ped.transportadora
+    db_ped.redespacho = pedido.redespacho or db_ped.redespacho
+    db_ped.tpFrete = pedido.tpFrete or db_ped.tpFrete
+    db_ped.obsPedido = pedido.obsPedido or db_ped.obsPedido
+    db_ped.obsFiscal = pedido.obsFiscal or db_ped.obsFiscal
+    db_ped.condPagamento = pedido.condPagamento or db_ped.condPagamento
+    db_ped.vlTotal = pedido.vlTotal or db_ped.vlTotal
+    db_ped.idCliente = pedido.idCliente or db_ped.idCliente
+    db_ped.idMarca = pedido.idMarca or db_ped.idMarca
+    db_ped.idFilial = pedido.idFilial or db_ped.idFilial
+    db_ped.idUsuario = pedido.idUsuario or db_ped.idUsuario
+    db_ped.dtEmissao = pedido.dtEmissao or db_ped.dtEmissao
+    db_ped.dtVencimento = pedido.dtVencimento or db_ped.dtVencimento
+    db_ped.ativo = pedido.ativo or db_ped.ativo
+    db_ped.status = pedido.status or db_ped.status
 
     db.add(db_ped)
     db.commit()
