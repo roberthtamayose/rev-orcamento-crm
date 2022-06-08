@@ -54,7 +54,6 @@ def get_pedido_allParam(db: Session, idFilial: Optional[int] = None, idPedido: O
         if value:
             listParamFinal.append(f"{key} = {value}")
     makeitastring = ' and '.join(map(str, listParamFinal))
-    print('makeitastring... ',makeitastring)
     return db.query(models.Pedido).filter(text(makeitastring)).order_by(text(order)).offset(skip).limit(limit).all()
 
 
