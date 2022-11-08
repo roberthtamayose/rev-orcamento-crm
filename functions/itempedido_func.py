@@ -19,26 +19,22 @@ import models, schemas
    
    
 # id_Marca ou id_Cliente verificar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-def post_itempedido_idFilial(db: Session, filial, itempedido: List[schemas.ItemPedido], idUsuario, idPedido):
+def post_itempedido_idFilial(db: Session, filial, itempedido: schemas.ItemPedido, idUsuario, idPedido):
     existped = pedido_func.get_pedido_idPedido_carrinho(db, filial, idUsuario, idPedido)
-    result = []
+    # result= {}
     if existped:
-        for item in itempedido:
-            db_itempedido = models.ItemPedido(codProduto = item.codProduto, nmProduto = item.nmProduto, idErpColecao = item.idErpColecao, vlUnitario = item.vlUnitario, vlDesconto = item.vlDesconto, vlTotal = item.vlTotal,qtdItem = item.qtdItem, idPedido = existped.idPedido)
-            result.append(db_itempedido)
+            db_itempedido = models.ItemPedido(codProduto = itempedido.codProduto, nmProduto = itempedido.nmProduto, idErpColecao = itempedido.idErpColecao, vlUnitario = itempedido.vlUnitario, vlDesconto = itempedido.vlDesconto, vlTotal = itempedido.vlTotal,qtdItem = itempedido.qtdItem, idPedido = existped.idPedido)
             db.add(db_itempedido)
             db.commit()
             db.refresh(db_itempedido)
-        return result
+            return db_itempedido
     else:
         cabped = pedido_func.post_pedido_idfilial_idUsuario (db, filial, idUsuario)
-        for item in itempedido:
-            db_itempedido = models.ItemPedido(codProduto = item.codProduto, nmProduto = item.nmProduto, idErpColecao = item.idErpColecao, vlUnitario = item.vlUnitario, vlDesconto = item.vlDesconto, vlTotal = item.vlTotal,qtdItem = item.qtdItem, idPedido = cabped.idPedido)
-            result.append(db_itempedido)
-            db.add(db_itempedido)
-            db.commit()
-            db.refresh(db_itempedido)
-        return result
+        db_itempedido = models.ItemPedido(codProduto = itempedido.codProduto, nmProduto = itempedido.nmProduto, idErpColecao = itempedido.idErpColecao, vlUnitario = itempedido.vlUnitario, vlDesconto = itempedido.vlDesconto, vlTotal = itempedido.vlTotal,qtdItem = itempedido.qtdItem, idPedido = cabped.idPedido)
+        db.add(db_itempedido)
+        db.commit()
+        db.refresh(db_itempedido)
+        return db_itempedido
     
 
 def get_itempedido_idPedido(db: Session, filial, idUsuario, idPedido):

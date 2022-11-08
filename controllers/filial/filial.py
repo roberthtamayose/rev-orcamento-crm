@@ -21,18 +21,18 @@ def get_db():
         db.close()
 
 
-@router_filiais.post("/", response_model=schemas.Filial)
-def create_filial(filial: schemas.Filial, db: Session = Depends(get_db)):
-    db_filial = filial_func.get_filial_codFilial(db, filial.codFilial)
-    if db_filial:
-        raise HTTPException(status_code=400, detail="Filial já Cadastrada")
-    return filial_func.post_filial(db, filial)
+# @router_filiais.post("/", response_model=schemas.Filial)
+# def create_filial(filial: schemas.Filial, db: Session = Depends(get_db)):
+#     db_filial = filial_func.get_filial_codFilial(db, filial.codFilial)
+#     if db_filial:
+#         raise HTTPException(status_code=400, detail="Filial já Cadastrada")
+#     return filial_func.post_filial(db, filial)
 
 
 @router_filiais.get("/", response_model=List[schemas.Filial])
-def read_filiais(idFilial: Optional[str] = None, db: Session = Depends(get_db)):
-    if idFilial:
-        db_filial = filial_func.get_filial_idFilial(db, idFilial)
+def read_filiais(codFilial: Optional[str] = None, db: Session = Depends(get_db)):
+    if codFilial:
+        db_filial = filial_func.get_filial_codFilial(db, codFilial)
     else:
         db_filial = filial_func.get_filial(db)
     return db_filial
@@ -42,19 +42,19 @@ def read_filiais(idFilial: Optional[str] = None, db: Session = Depends(get_db)):
 #     db_filial = filial_func.get_filial_idFilial(db, idFilial)
 #     return db_filial
  
-@router_filiais.put("/{idFilial}", response_model=schemas.Filial)
-def update_filial(idFilial, filial: schemas.Filial, db: Session = Depends(get_db)):
-    db_filial = filial_func.get_filial_idFilial(db, idFilial)
-    if not db_filial:
-        raise HTTPException(status_code=400, detail="register not exist")
-    return filial_func.put_filial_idFilial(db, idFilial, filial)
+# @router_filiais.put("/{idFilial}", response_model=schemas.Filial)
+# def update_filial(idFilial, filial: schemas.Filial, db: Session = Depends(get_db)):
+#     db_filial = filial_func.get_filial_idFilial(db, idFilial)
+#     if not db_filial:
+#         raise HTTPException(status_code=400, detail="register not exist")
+#     return filial_func.put_filial_idFilial(db, idFilial, filial)
 
 
-@router_filiais.delete("/{idFilial}")
-def read_item(idFilial: int, db: Session = Depends(get_db)):
-    db_filial = filial_func.get_filial_idFilial(db, idFilial)
-    if not db_filial:
-        raise HTTPException(status_code=400, detail="register not exist")
-    return filial_func.delete_filial_idFilial(db, idFilial)
-    # return {"delete": deleted}
+# @router_filiais.delete("/{idFilial}")
+# def read_item(idFilial: int, db: Session = Depends(get_db)):
+#     db_filial = filial_func.get_filial_idFilial(db, idFilial)
+#     if not db_filial:
+#         raise HTTPException(status_code=400, detail="register not exist")
+#     return filial_func.delete_filial_idFilial(db, idFilial)
+#     # return {"delete": deleted}
 

@@ -25,52 +25,52 @@ def get_db():
 
 @router_usuario.post("/", response_model=schemas.Usuario)
 def post_usuario(usuario: schemas.Usuario, db: Session = Depends(get_db)):
-    db_User = usuario_func.get_usuario_idErpUser(db, usuario.idErpUser)
+    db_User = usuario_func.get_usuario_codUser(db, usuario.codUser)
     if db_User:
         raise HTTPException(status_code=400, detail="user already registered")
     return usuario_func.post_usuario(db, usuario)
 
 
-# @router_usuario.get("/", response_model=List[schemas.Usuario])
-# def read_usuario(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "nmUsuario",  db: Session = Depends(get_db)):
-#     db_User = usuario_func.get_usuario(db, skip, limit, filter)
-#     return db_User
-
-
-@router_usuario.get("/", response_model=List[schemas.Usuario])
-def read_usuario_idUsuario(idUsuario: Optional[int] = None, emailUsuario: Optional[str] = None, idVendedor: Optional[int] = None, skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None), db: Session = Depends(get_db)):
-    if idUsuario and emailUsuario and idVendedor:
-        db_Vend = vendedor_func.get_vendedor_idVendedor(db, idVendedor)
-        # if db_Vend and db_Vend.idUsuario == idUsuario:
-        db_User = usuario_func.get_usuario_idUsuario_emailUsuario(db, idUsuario, emailUsuario) if db_Vend and db_Vend[0].idUsuario == idUsuario else []
-        # else:
-        #     db_User = []
-    elif idUsuario and emailUsuario and not idVendedor:  
-        db_User = usuario_func.get_usuario_idUsuario_emailUsuario(db, idUsuario, emailUsuario)
-    elif idUsuario and not emailUsuario and not idVendedor:
-        db_User = usuario_func.get_usuario_idUsuario(db, idUsuario)
-    elif emailUsuario and not idUsuario and not idVendedor:
-        db_User = usuario_func.get_usuario_emailUsuario(db, emailUsuario)
-    elif idVendedor and not emailUsuario and not idUsuario:
-        db_Vend = vendedor_func.get_vendedor_idVendedor(db, idVendedor)
-        db_User = usuario_func.get_usuario_idUsuario(db, db_Vend[0].idUsuario)  if db_Vend else []
-    elif not emailUsuario and not idUsuario and not idVendedor:
-        db_User = usuario_func.get_usuario(db, skip, limit, filter)
-   
+@router_usuario.get("/", response_model=List[schemas.UsuarioVend])
+def read_usuario(skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None),  db: Session = Depends(get_db)):
+    db_User = usuario_func.get_usuario(db, skip, limit, filter)
     return db_User
+
+
+# @router_usuario.get("/", response_model=List[schemas.Usuario])
+# def read_usuario_id(id: Optional[int] = None, emailUsuario: Optional[str] = None, idVendedor: Optional[int] = None, skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None), db: Session = Depends(get_db)):
+#     if id and emailUsuario and idVendedor:
+#         db_Vend = vendedor_func.get_vendedor_idVendedor(db, idVendedor)
+#         # if db_Vend and db_Vend.id == id:
+#         db_User = usuario_func.get_usuario_id_emailUsuario(db, id, emailUsuario) if db_Vend and db_Vend[0].id == id else []
+#         # else:
+#         #     db_User = []
+#     elif id and emailUsuario and not idVendedor:  
+#         db_User = usuario_func.get_usuario_id_emailUsuario(db, id, emailUsuario)
+#     elif id and not emailUsuario and not idVendedor:
+#         db_User = usuario_func.get_usuario_id(db, id)
+#     elif emailUsuario and not id and not idVendedor:
+#         db_User = usuario_func.get_usuario_emailUsuario(db, emailUsuario)
+#     elif idVendedor and not emailUsuario and not id:
+#         db_Vend = vendedor_func.get_vendedor_idVendedor(db, idVendedor)
+#         db_User = usuario_func.get_usuario_id(db, db_Vend[0].id)  if db_Vend else []
+#     elif not emailUsuario and not id and not idVendedor:
+#         db_User = usuario_func.get_usuario(db, skip, limit, filter)
+   
+#     return db_User
  
 
-@router_usuario.put("/{idUsuario}", response_model=schemas.Usuario)
-def update_usuario(idUsuario: int , usuario: schemas.Usuario, db: Session = Depends(get_db)):
-    db_User = usuario_func.get_usuario_idUsuario(db, idUsuario)
+@router_usuario.put("/{id}", response_model=schemas.Usuario)
+def update_usuario(id: int , usuario: schemas.Usuario, db: Session = Depends(get_db)):
+    db_User = usuario_func.get_usuario_id(db, id)
     if not db_User:
         raise HTTPException(status_code=400, detail="register not exist")
-    return usuario_func.put_usuario_idUsuario(db, idUsuario, usuario)
+    return usuario_func.put_usuario_id(db, id, usuario)
 
 
-@router_usuario.delete("/{idUsuario}", response_model=schemas.Usuario)
-def delete_usuario(idUsuario: int, db: Session = Depends(get_db)):
-   db_User = usuario_func.get_usuario_idUsuario(db, idUsuario)
+@router_usuario.delete("/{id}", response_model=schemas.Usuario)
+def delete_usuario(id: int, db: Session = Depends(get_db)):
+   db_User = usuario_func.get_usuario_id(db, id)
    if not db_User:
       raise HTTPException(status_code=400, detail="register not exist")
-   return usuario_func.delete_usuario_idUsuario(db, idUsuario)
+   return usuario_func.delete_usuario_id(db, id)

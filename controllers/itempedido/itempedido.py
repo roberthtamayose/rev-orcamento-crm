@@ -24,8 +24,9 @@ def get_db():
 
 
 # id_Marca ou id_Cliente verificar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-@router_itempedido.post("/", response_model=List[schemas.ItemPedido])
-def create_itempedido_idPedido(idFilial, itempedido: List[schemas.ItemPedido], idUsuario, idPedido: Optional[int] = None, db: Session = Depends(get_db)):
+@router_itempedido.post("/", response_model=schemas.ItemPedido)
+def create_itempedido_idPedido(idFilial, itempedido: schemas.ItemPedido, idUsuario, idPedido: Optional[int] = None, db: Session = Depends(get_db)):
+    print ("itempedido...........", itempedido) 
     # db_itempedido = pedido_func.get_pedido_idPedido_carrinho(db, idFilial, itempedido[0].idPedido, idUsuario) 
     # if not db_itempedido:
     #     # pedido_func.post_pedido(db, schemas.Pedido)

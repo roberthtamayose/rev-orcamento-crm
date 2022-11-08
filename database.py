@@ -3,7 +3,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import urllib
 
-params = urllib.parse.quote_plus("DRIVER={ODBC Driver 17 for SQL Server};SERVER=10.111.70.1;DATABASE=PEDIDOS_NS;UID=pedidos;PWD=Pedidos@2022")
+from decouple import config
+JWT_SERVER = config("server")
+
+params = urllib.parse.quote_plus(JWT_SERVER)
 
 engine = create_engine("mssql+pyodbc:///?odbc_connect=%s" % params)
 

@@ -7,7 +7,7 @@ import models, schemas
 
 
 def post_condpagamento(db: Session, condpagamento: schemas.CondPagamento):
-    db_condpagamento = models.CondPagamento(idErpCondPag= condpagamento.idErpCondPag, nmCondPag=condpagamento.nmCondPag, ativo=condpagamento.ativo)
+    db_condpagamento = models.CondPagamento(codCondPag= condpagamento.codCondPag, nomeCondPag=condpagamento.nomeCondPag, ativo=condpagamento.ativo)
     db.add(db_condpagamento)
     db.commit()
     db.refresh(db_condpagamento)
@@ -15,23 +15,23 @@ def post_condpagamento(db: Session, condpagamento: schemas.CondPagamento):
 
 
 def get_condpagamento(db: Session, skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None) ):
-    order = ','.join([str(i) for i in filter]) if filter else 'idCondPag'
+    order = ','.join([str(i) for i in filter]) if filter else 'id'
     return db.query(models.CondPagamento).order_by(text(order)).offset(skip).limit(limit).all()
 
 
-def get_condpagamento_idCondPag(db: Session, idCondPag: int):
-    return db.query(models.CondPagamento).filter(models.CondPagamento.idCondPag == idCondPag).all()
+def get_condpagamento_id(db: Session, id: int):
+    return db.query(models.CondPagamento).filter(models.CondPagamento.id == id).all()
 
 
-def get_condpagamento_idErpCondPag(db: Session, idErpCondPag: str):
-    return db.query(models.CondPagamento).filter(models.CondPagamento.idErpCondPag == idErpCondPag).first()
+def get_condpagamento_codCondPag(db: Session, codCondPag: str):
+    return db.query(models.CondPagamento).filter(models.CondPagamento.codCondPag == codCondPag).first()
 
 
-def put_condpagamento_idCondPag(db: Session, idCondPag: int, condpagamento: schemas.CondPagamento):
-    db_condpagamento =  db.query(models.CondPagamento).filter(models.CondPagamento.idCondPag == idCondPag).first()
+def put_condpagamento_id(db: Session, id: int, condpagamento: schemas.CondPagamento):
+    db_condpagamento =  db.query(models.CondPagamento).filter(models.CondPagamento.id == id).first()
 
-    db_condpagamento.idErpCondPag =  condpagamento.idErpCondPag
-    db_condpagamento.nmCondPag =  condpagamento.nmCondPag
+    db_condpagamento.codCondPag =  condpagamento.codCondPag
+    db_condpagamento.nomeCondPag =  condpagamento.nomeCondPag
     db_condpagamento.ativo =  condpagamento.ativo
 
     db.add(db_condpagamento)
@@ -40,8 +40,8 @@ def put_condpagamento_idCondPag(db: Session, idCondPag: int, condpagamento: sche
     return db_condpagamento
 
 
-def delete_condpagamento_idCondPag(db: Session, idCondPag: int):
-    db_condpagamento =  db.query(models.CondPagamento).filter(models.CondPagamento.idCondPag == idCondPag).first()
+def delete_condpagamento_id(db: Session, id: int):
+    db_condpagamento =  db.query(models.CondPagamento).filter(models.CondPagamento.id == id).first()
     db.delete(db_condpagamento)
     db.commit()
     return db_condpagamento

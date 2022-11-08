@@ -1,17 +1,9 @@
 from datetime import date
 from typing import List, Optional
-
 from pydantic import BaseModel
 
 
-class Transportadora(BaseModel):
-   idTransp: Optional[int] = None
-   idErpTransp: str
-   nmTransp: str
-   ativo: int 
 
-   class Config:
-      orm_mode = True
 
 
 class Filial(BaseModel):
@@ -23,51 +15,12 @@ class Filial(BaseModel):
       orm_mode = True
 
 
-class CondPagamento(BaseModel):
-   idCondPag: Optional[int] = None
-   idErpCondPag: str
-   nmCondPag: str
-   ativo: int
-
-   class Config:
-      orm_mode = True
 
 
-class Cliente(BaseModel):
-   idCliente: Optional[int] = None
-   idErpCliente: str
-   nmCliente: str
-   emailCliente: str
-   tpCliente: Optional[str]
-   limiteCredito:	Optional[float]
-   idVendedor: int
-   ativo: int
-
-   class Config:
-         orm_mode = True
 
 
-class Usuario(BaseModel):
-   idUsuario: Optional[int] = None
-   idErpUser: str
-   nmUsuario: str
-   sobrenomeUsuario: str
-   emailUsuario: str
-   senhaUsuario: Optional[str] = None
-   ativo: int
-   nivel: int
-
-   class Config:
-         orm_mode = True
 
 
-class Vendedor(BaseModel):
-   idVendedor: int
-   IdErpUser: str
-   idUsuario: int
-
-   class Config:
-         orm_mode = True
 
 
 class Produto(BaseModel):
@@ -152,3 +105,242 @@ class Preco(BaseModel):
 
    class Config:
       orm_mode = True
+      
+class Estoque(BaseModel):
+   id: Optional[int] = None
+   filial: str
+   codProd: str
+   colecao: str
+   quantidade: float
+   ativo: str
+
+   class Config:
+      orm_mode = True
+
+class Produto(BaseModel):
+   id: Optional[int] = None
+   filial: str
+   codProd: str
+   nomeProd: str
+   colecao: str
+   ativo: str
+
+   class Config:
+      orm_mode = True
+
+
+
+# ----------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------
+
+
+class Transportadora(BaseModel):
+   id: Optional[int] = None
+   codTransp: str
+   nomeTransp: str
+   ativo: str 
+
+   class Config:
+      orm_mode = True
+
+
+class CondPagamento(BaseModel):
+   id: Optional[int] = None
+   codCondPag: str
+   nomeCondPag: str
+   ativo: str
+
+   class Config:
+      orm_mode = True
+
+
+class Cliente(BaseModel):
+   id: Optional[int] = None
+   codCliente: str
+   nomeCliente: str
+   emailCliente: str
+   # vend_id: int
+   ativo: str
+
+   class Config:
+         orm_mode = True
+
+
+class Vendedor(BaseModel):
+   id: Optional[int] = None
+   codVend: str
+   nomeVend: str
+   user_id: int
+   ativo: str
+   
+   class Config:
+         orm_mode = True
+
+
+class VendedorCliente(BaseModel):
+   id: Optional[int] = None
+   codVend: str
+   nomeVend: str
+   user_id: int
+   ativo: str
+   cliente: List[Cliente]
+
+   class Config:
+         orm_mode = True
+
+
+class VendedorUser(BaseModel):
+   id: Optional[int] = None
+   codVend: str
+   nomeVend: str
+   ativo: str
+
+   class Config:
+         orm_mode = True
+
+
+class Usuario(BaseModel):
+   id: Optional[int] = None
+   codUser: str
+   nome: str
+   email: str
+   senha: Optional[str] = None
+   adm: str
+   ativo: str
+
+   class Config:
+         orm_mode = True
+
+
+
+class UsuarioVend(BaseModel):
+   id: Optional[int] = None
+   codUser: str
+   nome: str
+   email: str
+   senha: Optional[str] = None
+   adm: str
+   ativo: str
+   vend: List[VendedorUser]
+
+   class Config:
+         orm_mode = True
+
+class OrcamentoPost(BaseModel):
+   id: Optional[int] = None
+   filial: str
+   numOrc: str
+   numRevisao: str
+   status: str
+   cliente_id: int
+   vend_id: int
+   condPag_id: int
+   transp_id: int
+   ativo: str
+
+   class Config:
+         orm_mode = True
+
+
+class ItemOrcamentoGet(BaseModel):
+   id: Optional[int] = None
+   filial: str
+   quantidade: float
+   preco: float
+   produto: Produto
+   ativo: str
+
+   class Config:
+         orm_mode = True
+
+
+class OrcamentoMaxNum(BaseModel):
+   numOrc: str
+   
+   class Config:
+         orm_mode = True
+
+
+class Orcamento(BaseModel):
+   id: Optional[int] = None
+   filial: str
+   numOrc: str
+   numRevisao: str
+   status: str
+   cliente: Cliente
+   vendedor: Vendedor
+   condPagamento: CondPagamento
+   transportadora: Transportadora
+   item: List[ItemOrcamentoGet]
+   ativo: str
+   
+
+   class Config:
+         orm_mode = True
+
+
+class OrcamentoPitem(BaseModel):
+   id: Optional[int] = None
+   filial: str
+   numOrc: str
+   numRevisao: str
+   status: str
+   ativo: str
+   
+
+   class Config:
+         orm_mode = True
+
+
+class ItemOrcamentoPost(BaseModel):
+   id: Optional[int] = None
+   filial: str
+   quantidade: float
+   preco: float
+   orc_id: int
+   prod_id: int
+   ativo: str
+
+   class Config:
+         orm_mode = True
+
+
+class ItemOrcamento(BaseModel):
+   id: Optional[int] = None
+   filial: str
+   quantidade: float
+   preco: float
+   orcamento: Orcamento
+   produto: Produto
+   ativo: str
+
+   class Config:
+         orm_mode = True
+
+
+class Filial(BaseModel):
+   id: Optional[int] = None
+   codFilial: str
+   nomeFilial: str
+
+   class Config:
+      orm_mode = True
+
+
+class OrcamentoPost1(BaseModel):
+   id: Optional[int] = None
+   filial: str
+   numOrc: str
+   numRevisao: str
+   status: str
+   cliente_id: int
+   vend_id: int
+   condPag_id: int
+   transp_id: int
+   ativo: str
+   itemOrcamento: List[ItemOrcamentoPost]
+
+   class Config:
+         orm_mode = True

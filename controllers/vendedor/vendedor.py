@@ -22,9 +22,13 @@ def get_db():
 
 
 @router_vendedor.get("/", response_model=List[schemas.Vendedor])
-def read_vendedor(skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None), idVendedor: Optional[int] = None, db: Session = Depends(get_db)):
-    if idVendedor:
-        db_Vend= vendedor_func.get_vendedor_idVendedor(db, idVendedor)
-    else:
-        db_Vend = vendedor_func.get_vendedor(db, skip, limit, filter)
+def read_vendedor(skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None), db: Session = Depends(get_db)):
+    db_Vend = vendedor_func.get_vendedor(db, skip, limit, filter)
+    return db_Vend
+
+
+
+@router_vendedor.get("/{id}", response_model=List[schemas.VendedorCliente])
+def read_vendedor(id: int, db: Session = Depends(get_db)):
+    db_Vend= vendedor_func.get_vendedor_id(db, id)
     return db_Vend

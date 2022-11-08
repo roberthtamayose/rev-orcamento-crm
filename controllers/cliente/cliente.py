@@ -24,9 +24,15 @@ def get_db():
     finally:
         db.close()
 
-# def read_cliente(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "idCliente", idCliente:Optional[int] = None, idVendedor:Optional[int] = None, idUsuario:Optional[int] = None, db: Session = Depends(get_db)):
+# def read_cliente(skip: Optional[int] = None, limit: Optional[int] = None, filter: Optional[str]= "id", id:Optional[int] = None, idVendedor:Optional[int] = None, idUsuario:Optional[int] = None, db: Session = Depends(get_db)):
 
 @router_cliente.get("/", response_model=List[schemas.Cliente])
-def read_cliente(skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None), idCliente:Optional[int] = None, idVendedor:Optional[int] = None, idUsuario:Optional[int] = None, db: Session = Depends(get_db)):
-    db_Cliente = cliente_func.get_clientes(db, idCliente, idVendedor, idUsuario, skip, limit, filter)
+def read_cliente(vend_id: int, skip: Optional[int] = None, limit: Optional[int] = None, filter: list[str] | None = Query(None), db: Session = Depends(get_db)):
+    db_Cliente = cliente_func.get_clientes(db, vend_id, skip, limit, filter)
+    return db_Cliente
+
+
+@router_cliente.get("/{id}", response_model=List[schemas.Cliente])
+def read_cliente(id: int, db: Session = Depends(get_db)):
+    db_Cliente = cliente_func.get_clientes_id(db, id)
     return db_Cliente
